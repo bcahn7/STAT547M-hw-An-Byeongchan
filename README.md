@@ -2,5 +2,5 @@
  
 ## Table of Contents  
 [link to the README.md of hw06](hw06/README.md)  
-- `filter`, `select`, `%>%`
-- `ggplot2`
+- 
+- 
