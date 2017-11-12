@@ -255,10 +255,43 @@ revgeocode2(NA, NA)
 ```
 
 
-2. Try to check wether the place in `city` corresponds to the information you retrieved.
+2. Try to check wether the place in `city` corresponds to the information you retrieved.   
+I tried to use `output = "more"` in `revgeocode()` to extract each element in address information. Information in `singer_loc4$city` contains only `city`, only `state`, or `city` with `state`. I tried to compare both. But the problem I got in was when I extract each element in address information using `output = "more"`, it returns full name of states. What I wanted was state abbreviations for comparing with `singer_loc4$city` (when `output = "address"` is used, the state names are in abbreviations.). I fixed this with `state.abb[grep(.x, state.name)]`. Then, the place in `city` corresponds to the information I retrieved.
+```{r}
+singer_loc4 <- singer_locations %>% 
+  filter(!is.na(longitude|latitude)) %>% 
+  head() %>% 
+  mutate(loc = map2(longitude, 
+                    latitude, 
+                    ~ revgeocode(c(.x, .y), output = "more"))) %>% 
+  unnest()
+
+#Mutating state abbreviations for administrative_area_level_1
+singer_loc4 <- singer_loc4 %>% 
+  mutate(admin_lv1_abb = map(administrative_area_level_1,
+                             ~ state.abb[grep(.x, state.name)])) %>% 
+  unnest()
+
+#Mutating city_state (city, state)
+singer_loc4 <- singer_loc4 %>% 
+  mutate(city_state = paste(locality, admin_lv1_abb, sep = ", "))
+
+# Comparing `city` from the data `singer_locations` and information extracted from longitude and latitude
+singer_loc4 <- singer_loc4 %>% 
+  mutate(Correspondence = ifelse((city == locality)|
+                                   (city == administrative_area_level_1)|
+                                   (city == city_state), "o", "xxx"))
+
+singer_loc4 
+# %>% 
+#  select(-street_number, -route, -neighborhood, -administrative_area_level_2, 
+#         -country, -postal_code, -political, -administrative_area_level_3)
+```
 
 3. If you still have time, you can go visual: give a look to the library [`leaflet`](https://rstudio.github.io/leaflet) and plot some information about the bands. A snippet of code is provided below.  
-```r
+```{r}
+#install.packages('leaflet')
+library(leaflet)
 singer_locations %>%  
   leaflet()  %>%   
   addTiles() %>%  
