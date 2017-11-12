@@ -111,10 +111,10 @@ pmap(mdf, substring)
 
 ## Steps to extract the words in a text
 Pseudo-code
-> text <- an element of a text
-> first <- an element of match_first
-> last <- an element of match_last
-> substring(text, first, last)
+> text <- an element of a text  
+> first <- an element of match_first  
+> last <- an element of match_last  
+> substring(text, first, last)  
 
 
 ## Application to Finance
@@ -163,6 +163,9 @@ names(gapminder)
 #Cross-sectional data (lifeExp vs gdpPercap) in 2007
 gap_2007 <- gapminder %>% 
   filter(year==2007) 
+
+
+#Try to do some regressions such as linear model, quadratic model, robust model
 gap_2007 %>% 
   ggplot(aes(x=lifeExp, y=gdpPercap)) +
   geom_point() +
@@ -171,12 +174,14 @@ gap_2007 %>%
   geom_smooth(method = "rlm", se=FALSE, color= "red") +
   geom_smooth(method = "auto", se=FALSE, color = "purple")
 
+#Try to get some coefficients using each regression methods
 lm(gdpPercap ~ lifeExp, gap_2007)
 gap_2007_temp <- gap_2007 %>% 
   mutate(lifeExp2=  lifeExp^2)
 lm(gdpPercap ~ lifeExp + lifeExp2, gap_2007_temp)
 rlm(gdpPercap ~ lifeExp, gap_2007)
 
+#Generalize (make a function) to take mode and year as inputs.
 Reg_life_gdp<- function(mode, year){
   gap_year <- gapminder %>% 
     filter(year == year) %>% 
@@ -195,6 +200,7 @@ Reg_life_gdp<- function(mode, year){
   }
 }
 
+#Some examples
 Reg_life_gdp("lm", 2002)
 Reg_life_gdp("rlm", 2007)
 ```
@@ -294,11 +300,11 @@ knitr::kable(singer_loc4_sam, format = "markdown")
 3. If you still have time, you can go visual: give a look to the library [`leaflet`](https://rstudio.github.io/leaflet) and plot some information about the bands. A snippet of code is provided below.  
 ```{r}
 #install.packages('leaflet')
-library(leaflet)
-singer_locations %>%  
-  leaflet()  %>%   
-  addTiles() %>%  
-  addCircles(popup = ~artist_name)
+#library(leaflet)
+#singer_locations %>%  
+#  leaflet()  %>%   
+#  addTiles() %>%  
+#  addCircles(popup = ~artist_name)
 ```
 
 
