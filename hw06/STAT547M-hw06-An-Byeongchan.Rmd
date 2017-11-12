@@ -122,7 +122,7 @@ I tried to apply this skill to analyze the minutes of the FOMC (Federal Open Mar
   
 I downloaded the data from https://stanford.edu/~rezab/useful/fomc_minutes.html 
   
-Downloaded: 3 minutes (20010627, 20061025, 20071211)
+Downloaded: 3 minutes (20010627, 20061025, 20071211)  
 Bag of words: inflation, investment, markets, economy, monetary, unemployment  
 
 This is basic and introductory textual analysis to see if there is a change in the number of words mentioned during different periods (IT bubble, 2008 Financial Crisis)
@@ -282,10 +282,13 @@ singer_loc4 <- singer_loc4 %>%
                                    (city == administrative_area_level_1)|
                                    (city == city_state), "o", "xxx"))
 
-singer_loc4 
-# %>% 
-#  select(-street_number, -route, -neighborhood, -administrative_area_level_2, 
-#         -country, -postal_code, -political, -administrative_area_level_3)
+singer_loc4_sam <- singer_loc4 %>% 
+  subset(select = -c(street_number, route, neighborhood, 
+                     administrative_area_level_2,
+                     country, postal_code, political, 
+                     administrative_area_level_3))
+knitr::kable(singer_loc4_sam, format = "markdown")
+
 ```
 
 3. If you still have time, you can go visual: give a look to the library [`leaflet`](https://rstudio.github.io/leaflet) and plot some information about the bands. A snippet of code is provided below.  
