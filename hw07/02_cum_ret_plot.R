@@ -7,6 +7,7 @@ str(cum_rets)
 
 # Preparing data for plotting together
 cum_rets2 <- cum_rets %>% 
+	select(Date, ret_cum_aapl, ret_cum_amzn) %>% 
   rename(AAPL = ret_cum_aapl, AMZN = ret_cum_amzn) %>% 
   gather(key ="Firm", value = "cum_ret", AAPL, AMZN)
 

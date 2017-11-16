@@ -44,8 +44,9 @@ amzn_ret <- ret_func(amzn_data)
 # Merging two data to compare cumulative returns between firms
 cum_ret_firms <- aapl_ret %>% 
   inner_join(amzn_ret, by= "Date") %>% 
-  select(Date, ret_cum.x, ret_cum.y) %>%
-  rename(ret_cum_aapl = ret_cum.x, ret_cum_amzn = ret_cum.y)
+  select(Date, ret_cum.x, ret_cum.y, ret.x, ret.y) %>%
+  rename(ret_cum_aapl = ret_cum.x, ret_cum_amzn = ret_cum.y, 
+  			 ret_aapl = ret.x, ret_amzn = ret.y)
   
 # Write the data in csv format (Cumulative returns for firms)
 write_csv(cum_ret_firms, "cum_rets.csv")

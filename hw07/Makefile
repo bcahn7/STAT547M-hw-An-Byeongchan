@@ -24,5 +24,5 @@ cum_rets_gathered.csv: cum_rets.csv 02_cum_ret_plot.R
 
 #	rm Rplots.pdf
 
-03_report.md: 03_report.Rmd cum_rets_gathered.csv aapl.csv amzn.csv
-	Rscript -e "rmarkdown::render('03_report.Rmd')" cum_rets_gathered.csv aapl.csv amzn.csv
+03_report.md: 03_report.Rmd cum_rets_gathered.csv aapl.csv amzn.csv cum_rets.csv
+	Rscript -e "rmarkdown::render('03_report.Rmd')" cum_rets_gathered.csv aapl.csv amzn.csv cum_rets.csv
