@@ -14,7 +14,7 @@ I wrote a `Makefile` to automate my pipeline using `make`.
 [link to hw07 00_download-data.R](00_download-data.R)   
   - Downloaded two datasets from `google finance` and saved it as `csv` file.  
   
-[link to hw07 01_calculate_ret.R](01_calculate_ret.R)    
+[link to hw07 01_calculate-ret.R](01_calculate-ret.R)    
   - I made functions to transform the datasets for calculating daily returns and cumulative returns.   
   - This is the preparation for comparison.   
   
