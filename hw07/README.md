@@ -3,7 +3,7 @@
 
 ## Automating the pipeline
 ### 1. Write a master R script   
-I worte a master R script that simply `source()`s the scripts and renders my RMarkdown report. 
+I wrote a master R script that simply `source()`s the scripts and renders my RMarkdown report. 
 [link to hw07 Master.R](Master.R)  
   
 ### 2. Write a `Makefile`
@@ -12,15 +12,15 @@ I wrote a `Makefile` to automate my pipeline using `make`.
   
 ### Process
 [link to hw07 00_download-data.R](00_download-data.R)   
-- Downloaded two datasets from `google finance` and saved it as `csv` file.
-[link to hw07 01_calculate_ret.R](01_calculate_ret.R)   
-- I made functions to transform the datasets for calculating daily returns and cumulative returns. 
-- This is the preparation for comparison. 
-[link to hw07 02_cum_ret_plot.R](02_cum_ret_plot.R)   
-- This is to produce a plot to compare the cumulative returns 
-  
-[link to hw07 03_report.md](03_report.md)  
-- This is my `report.md` file. I aggregate all the figures I need and make some comments on them. 
+- Downloaded two datasets from `google finance` and saved it as `csv` file.  
+[link to hw07 01_calculate_ret.R](01_calculate_ret.R)    
+- I made functions to transform the datasets for calculating daily returns and cumulative returns.   
+- This is the preparation for comparison.   
+[link to hw07 02_cum_ret_plot.R](02_cum_ret_plot.R)    
+- This is to produce a plot to compare the cumulative returns   
+    
+[link to hw07 03_report.md](03_report.md)   
+- This is my `report.md` file. I aggregate all the figures I need and make some comments on them.   
 
   
 
