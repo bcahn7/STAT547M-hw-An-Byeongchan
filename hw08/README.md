@@ -50,11 +50,8 @@
 
 
 ## Report my progress
-- It was good to have an opportunity to apply what I learned into Finance.
-- `cumprod()` makes it easy to calculate cumulative returns.
-- Making use of `function()`s reduces repetitive works.
-- When converting `strings` to `dates` using `as.Date()`, it could not recognize `%b` (Jan, Feb, ...) format ( I don't know why). So, I just replaced it with each month with number (`%m` format).
-- For me, it was harder to handle with `Makefile`. `Master.R` seems to be more intuitive to me. I had a lot of trials and errors to complete my `Makefile`. 
-
+- I could understand how server.R and ui.R work.
+- [Dean's version of this app](http://daattali.com/shiny/bcl/) was really helpful to add various features on the app.
+- [Shiny cheatsheet](http://shiny.rstudio.com/images/shiny-cheatsheet.pdf) was also useful.
 
 
