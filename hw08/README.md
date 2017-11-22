@@ -15,7 +15,7 @@
 ## 7 Features done in hw08 
 
 - [x] Add an image of the BC Liquor Store to the UI.(**Hint:** Place the image in a folder named `www`, and use `img(src = "imagename.png")` to add the image.)
-    - ***I added an image of the BC Liquor Store on the sidebar***
+    - *I added an image of the BC Liquor Store on the sidebar*
   
 - [x] Use the `DT` package to turn the current results table into an interactive table.(**Hint:** Install the `DT` package, replace `tableOutput()` with `DT::dataTableOutput()` and replace `renderTable()` with `DT::renderDataTable()`.)
     - ***I used `DT` package to make the table interactive. The table has options to select the number of entries shown in each page, to search, and to sort items for each category***
