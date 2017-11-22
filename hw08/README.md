@@ -12,7 +12,7 @@
   
     
     
-## Features done in hw08 
+## 7 Features done in hw08 
 
 - [x] Add an image of the BC Liquor Store to the UI.
     - **Hint:** Place the image in a folder named `www`, and use `img(src = "imagename.png")` to add the image.
