@@ -12,7 +12,7 @@
   
     
     
-## 7 Features done in hw08 
+## 11 Features done in hw08 
 
 - [x] Add an image of the BC Liquor Store to the UI.(**Hint:** Place the image in a folder named `www`, and use `img(src = "imagename.png")` to add the image.)
     - ***I added an image of the BC Liquor Store on the sidebar***
@@ -34,15 +34,27 @@
     - ***I chose `checkboxGroupInput()` to allow for multiple alcohol types choice***
   
   
-## Features to be tried   
-- [ ] Add an option to sort the results table by price.
-    - **Hint:** Use `checkboxInput()` to get TRUE/FALSE values from the user.
-- [ ] When the user wants to see only wines, show a new input that allows the user to filter by sweetness level. Only show this input if wines are selected.
-    - **Hint:** Create a new input function for the sweetness level, and use it in the server code that filters the data. Use `conditionalPanel()` to conditionally show this new input. The `condition` argument of `conditionalPanel` should be something like `input.typeInput == "WINE"`.
-- [ ] If you look at the dataset, you'll see that each product has a "type" (beer, wine, spirit, or refreshment) and also a "subtype" (red wine, rum, cider, etc.). Add an input for "subtype" that will let the user filter for only a specific subtype of products. Since each type has different subtype options, the choices for subtype should get re-generated every time a new type is chosen. For example, if "wine" is selected, then the subtypes available should be white wine, red wine, etc.
-    - **Hint:** Use `uiOutput()` to create this input in the server code.
+### Features I got in trouble (They were done at the end)   
+- [x] Add an option to sort the results table by price. (**Hint:** Use `checkboxInput()` to get TRUE/FALSE values from the user.)
+    - ***I added an option to sort the results table by price on the sidebar***
+- [x] When the user wants to see only wines, show a new input that allows the user to filter by sweetness level. Only show this input if wines are selected. (**Hint:** Create a new input function for the sweetness level, and use it in the server code that filters the data. Use `conditionalPanel()` to conditionally show this new input. The `condition` argument of `conditionalPanel` should be something like `input.typeInput == "WINE"`.)
+    - ***When the user selects ONLY wines, a new select box appears. When the user checks the checkbox ("Do you want to choose the sweetness of Wine?"), selectbox appears. Then, the user can see the filtered data according to their choice (Multiple choice is available)***
+- [x] If you look at the dataset, you'll see that each product has a "type" (beer, wine, spirit, or refreshment) and also a "subtype" (red wine, rum, cider, etc.). Add an input for "subtype" that will let the user filter for only a specific subtype of products. Since each type has different subtype options, the choices for subtype should get re-generated every time a new type is chosen. For example, if "wine" is selected, then the subtypes available should be white wine, red wine, etc.(**Hint:** Use `uiOutput()` to create this input in the server code.)
+    - ***There's a checkbox saying "Subtype Detail" on the sidebar. When it is checked, the user can choose subtype according to the choice of types. (The choices of subtype are re-generated every time a new type is chosen. Multiple choice is available.)***
 
+- [x] Provide a way for the user to show results from *all* countries (instead of forcing a filter by only one specific country).(**Hint:** There are two ways to approach this. You can either add a value of "All" to the dropdown list of country options, you can include a checkbox for "Filter by country" and only show the dropdown when it is unchecked (see [my version of this app](http://daattali.com/shiny/bcl/) to see this option in action). In both cases you'll still need to update the server code appropriately to filter by country only when the user chooses to.)
+    -  ***I added a value of "ALL COUNTRIES" to the dropdown list of country options so that the user can see results from all countries. Showing all the results by including a checkbox is used in the choice of Wine sweetness and the subtype detail choice.***
+  
+## Features to be tried
 
+- Add parameters to the plot.
+    - **Hint:** You will need to add input functions that will be used as parameters for the plot. You could use `shinyjs::colourInput()` to let the user decide on the colours of the bars in the plot.
+    
+- If you know CSS, add CSS to make your app look nicer.
+    - **Hint:** Add a CSS file under `www` and use the function `includeCSS()` to use it in your app.
+
+- Experiment with packages that add extra features to Shiny, such as `shinyjs`, `leaflet`, `shinydashboard`, `shinythemes`, `ggvis`.
+    - **Hint:** Each package is unique and has a different purpose, so you need to read the documentation of each package in order to know what it provides and how to use it.
 
 
 
