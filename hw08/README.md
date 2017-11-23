@@ -64,3 +64,66 @@
 - [Shiny cheatsheet](http://shiny.rstudio.com/images/shiny-cheatsheet.pdf) was also useful.
 
 - When creating an interface with multiple tabs using `tabsetPanel()`, I put `tabsetPanel()` to be parallel to `sidebarPanel` and `mainPanel`. Then, the layout became unorganized. So, I tried to put `tabsetPanel()` within `mainPanel` to make it neater.  
+- When I tried to filter data bcl_data according to different kinds of inputs, I got in trouble. Firstly, I tried to piping them using `if` and `%>%`. However, it didn't work. And then I tried to assign all the filtered data to Filtered_bcl using `if`.  
+```
+  Filtered_bcl <- reactive({
+    
+    if (is.null(input$typeIn)) return(NULL)    
+    Filtered_bcl <- bcl_data %>%
+      filter(Price >= input$priceIn[1],
+             Price <= input$priceIn[2],
+             Type %in% input$typeIn)
+    
+    if(input$sortprc)
+      Filtered_bcl <- arrange(Filtered_bcl, desc(Price))
+    else Filtered_bcl <- Filtered_bcl
+    
+    
+    if(input$typeIn != "WINE")
+      Filtered_bcl <- Filtered_bcl
+    else{
+      if(input$wantsweetness){
+        Filtered_bcl <- Filtered_bcl %>% 
+          filter(Sweetness == input$sweetIn)
+      }
+      else Filtered_bcl <- Filtered_bcl
+    }
+    
+    if(input$wantsubtype && !is.null(input$subtypeIn)){
+      Filtered_bcl <- Filtered_bcl %>% 
+        filter(Subtype %in% input$subtypeIn)
+    }
+    else Filtered_bcl <- Filtered_bcl
+    
+    
+    if(input$countryIn != "***ALL COUNTRIES***"){
+      Filtered_bcl <- Filtered_bcl %>%
+      filter(Country == input$countryIn)
+    }
+    else Filtered_bcl <- Filtered_bcl
+  })
+
+```
+- When I tried to use `if` to solve the problem, it did not work without put `else Filtered_bcl <- Filtered_bcl` after every `if`. It didn't make sense to me because when the argument within `if` is not fulfilled, there should be no change and `else Filtered_bcl <- Filtered_bcl` sounds redundant to me. I still do not understand it.
+
+- When I made a select box for the choice of subtypes, I used this code.
+```
+output$subtypeOut <- renderUI({
+    selectInput("subtypeIn", "Choose subtype",
+                unique(filter(bcl_data, Price >= input$priceIn[1],
+                                        Price <= input$priceIn[2],
+                                        Type %in% input$typeIn)$Subtype),
+                multiple = TRUE)
+```
+Firstly, I tried to make a `subtype_list` using `reactive({})` and put it in the `choice` argument. However, it did not work so I just put `unique(filter(bcl_data, Price >= input$priceIn[1], Price <= input$priceIn[2], Type %in% input$typeIn)$Subtype)` in the `choice` argument.
+``` 
+subtype_list <- reactive({
+   subtype_list_temp <- bcl_data %>%
+     filter(Price >= input$priceIn[1],
+            Price <= input$priceIn[2],
+            Type %in% input$typeIn)
+
+   subtype_list <- sort(unique(subtype_list_temp$Subtype))
+   return(subtype_list)
+ })
+```
