@@ -32,8 +32,9 @@
 
 - [x] Allow the user to search for multiple alcohol types simultaneously, instead of being able to choose only wines/beers/etc. (**Hint:** There are two approaches to do this. Either change the `typeInput` radio buttons into checkboxes (`checkboxGroupInput()`) since checkboxes support choosing multiple items, or change `typeInput` into a select box (`selectInput()`) with the argument `multiple = TRUE` to support choosing multiple options.)
     - ***I chose `checkboxGroupInput()` to allow for multiple alcohol types choice***
-  
-  
+    
+   
+   
 ### Features I got in trouble (They were done at the end)   
 - [x] Add an option to sort the results table by price. (**Hint:** Use `checkboxInput()` to get TRUE/FALSE values from the user.)
     - ***I added an option to sort the results table by price on the sidebar***
@@ -45,6 +46,7 @@
 - [x] Provide a way for the user to show results from *all* countries (instead of forcing a filter by only one specific country).(**Hint:** There are two ways to approach this. You can either add a value of "All" to the dropdown list of country options, you can include a checkbox for "Filter by country" and only show the dropdown when it is unchecked (see [my version of this app](http://daattali.com/shiny/bcl/) to see this option in action). In both cases you'll still need to update the server code appropriately to filter by country only when the user chooses to.)
     -  ***I added a value of "ALL COUNTRIES" to the dropdown list of country options so that the user can see results from all countries. Showing all the results by including a checkbox is used in the choice of Wine sweetness and the subtype detail choice.***
   
+   
 ## Features to be tried
 
 - Add parameters to the plot.
