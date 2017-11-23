@@ -7,11 +7,23 @@ ui <- fluidPage(
                
                sliderInput("priceIn", "Price of booze",
                            min = 0, max = 300, 
-                           value = c(10,20), pre = "CAD"),
+                           value = c(10,30), pre = "CAD"),
                checkboxGroupInput("typeIn", "What kind of booze?",
-                            choices = c("BEER","SPIRITS", "WINE"),
-                            selected = "SPIRITS"),
-               #checkboxInput("testIN", "Hello"),
+                                  choices = c("BEER","SPIRITS", "WINE", "REFRESHMENT"),
+                                  selected = "SPIRITS"),
+               br(),
+               conditionalPanel(condition = "input.typeIn=='WINE'",
+                                uiOutput("sweetchoicer")),
+               conditionalPanel(condition = "input.wantsweetness",
+                                uiOutput("sweetofWine")),
+               br(), br(),
+               checkboxInput("wantsubtype", "Subtype Detail"),
+               conditionalPanel(condition = "input.wantsubtype",
+                                uiOutput("subtypeOut")),
+               br(),
+               uiOutput("countryselOutput"),
+               br(),
+               checkboxInput("sortprc", "sort the results by price"),
                img(src = "BC_liquor.png", width = "100%")),
   
   mainPanel(h3(textOutput("summary_text")),
@@ -20,8 +32,8 @@ ui <- fluidPage(
             
             tabsetPanel(
               tabPanel("Plot", plotOutput("Hist_AlcCont")),
-            #br(),br(),
-            #tableOutput("table")
+              #br(),br(),
+              #tableOutput("table")
               tabPanel("Table", DT::dataTableOutput("table")))
   )
 )
