@@ -118,7 +118,7 @@ output$subtypeOut <- renderUI({
                 multiple = TRUE)
 ```
 Firstly, I tried to make a `subtype_list` using `reactive({})` and put it in the `choice` argument. However, it did not work so I just put `unique(filter(bcl_data, Price >= input$priceIn[1], Price <= input$priceIn[2], Type %in% input$typeIn)$Subtype)` in the `choice` argument.
-```{r}
+```{}
 subtype_list <- reactive({
    subtype_list_temp <- bcl_data %>%
      filter(Price >= input$priceIn[1],
