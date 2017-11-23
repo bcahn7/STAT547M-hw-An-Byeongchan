@@ -23,7 +23,7 @@
     - ***I fixed the problem which occurs when the user selects filters that return 0 results. I used `if(is.null()) return(NULL)` to fix this problem***
 
 - [x] Place the plot and the table in separate tabs.(**Hint:** Use `tabsetPanel()` to create an interface with multiple tabs.)
-    - ***I used `tabsetPanel()` within `mainPanel()` to create an interface with multiple tabs within `mainPanel()`***
+    - ***I used `tabsetPanel()` within `mainPanel()` to create an interface with multiple tabs (Plot and Table) within `mainPanel()`***
 
 - [x] Show the number of results found whenever the filters change. For example, when searching for Italian wines $20-$40, the app would show the text "We found 122 options for you". (**Hint:** Add a `textOutput()` to the UI, and in its corresponding `renderText()` use the number of rows in the `filtered()` object.)
     - ***I used `textOutput()`, `renderText()` to print out the number of results found. I added `if(is.null(count_result)) count_result <- 0` to print out "0" when there is no input.*** 
