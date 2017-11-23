@@ -21,7 +21,7 @@ server <- function(input, output) {
     else{
       if(input$wantsweetness){
         Filtered_bcl <- Filtered_bcl %>% 
-          filter(Sweetness == input$sweetIn)
+          filter(Sweetness %in% input$sweetIn)
       }
       else Filtered_bcl <- Filtered_bcl
     }
@@ -56,10 +56,9 @@ server <- function(input, output) {
     
   })
   output$sweetofWine <- renderUI({
-    sliderInput("sweetIn", "The sweetness of Wine",
+    selectInput("sweetIn", "The sweetness of Wine",
                 sort(unique(bcl_data$Sweetness)),
                 selected= 5, multiple = TRUE)
-    
   })
   
   output$subtypeOut <- renderUI({
@@ -68,7 +67,6 @@ server <- function(input, output) {
                                         Price <= input$priceIn[2],
                                         Type %in% input$typeIn)$Subtype),
                 multiple = TRUE)
-
   })
 
   

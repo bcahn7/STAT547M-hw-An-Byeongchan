@@ -14,7 +14,7 @@ ui <- fluidPage(
                br(),
                conditionalPanel(condition = "input.typeIn=='WINE'",
                                 uiOutput("sweetchoicer")),
-               conditionalPanel(condition = "input.wantsweetness",
+               conditionalPanel(condition = "input.wantsweetness && input.typeIn=='WINE'",
                                 uiOutput("sweetofWine")),
                br(), br(),
                checkboxInput("wantsubtype", "Subtype Detail"),
