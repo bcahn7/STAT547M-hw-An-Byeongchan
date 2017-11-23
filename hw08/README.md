@@ -67,7 +67,7 @@
 
 - When creating an interface with multiple tabs using `tabsetPanel()`, I put `tabsetPanel()` to be parallel to `sidebarPanel` and `mainPanel`. Then, the layout became unorganized. So, I tried to put `tabsetPanel()` within `mainPanel` to make it neater.  
 - When I tried to filter data bcl_data according to different kinds of inputs, I got in trouble. Firstly, I tried to piping them using `if` and `%>%`. However, it didn't work. And then I tried to assign all the filtered data to Filtered_bcl using `if`.  
-```
+```{}
   Filtered_bcl <- reactive({
     
     if (is.null(input$typeIn)) return(NULL)    
@@ -109,7 +109,7 @@
 - When I tried to use `if` to solve the problem, it did not work without putting `else Filtered_bcl <- Filtered_bcl` after every `if`. It didn't make sense to me because when the argument within `if` is not fulfilled, there should be no change and `else Filtered_bcl <- Filtered_bcl` sounds redundant to me. I still do not understand it.
 
 - When I made a select box for the choice of subtypes, I used this code.
-```
+```{}
 output$subtypeOut <- renderUI({
     selectInput("subtypeIn", "Choose subtype",
                 unique(filter(bcl_data, Price >= input$priceIn[1],
@@ -118,7 +118,7 @@ output$subtypeOut <- renderUI({
                 multiple = TRUE)
 ```
 Firstly, I tried to make a `subtype_list` using `reactive({})` and put it in the `choice` argument. However, it did not work so I just put `unique(filter(bcl_data, Price >= input$priceIn[1], Price <= input$priceIn[2], Type %in% input$typeIn)$Subtype)` in the `choice` argument.
-``` 
+```{}
 subtype_list <- reactive({
    subtype_list_temp <- bcl_data %>%
      filter(Price >= input$priceIn[1],
