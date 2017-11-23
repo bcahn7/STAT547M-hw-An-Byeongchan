@@ -104,7 +104,7 @@
   })
 
 ```
-- When I tried to use `if` to solve the problem, it did not work without put `else Filtered_bcl <- Filtered_bcl` after every `if`. It didn't make sense to me because when the argument within `if` is not fulfilled, there should be no change and `else Filtered_bcl <- Filtered_bcl` sounds redundant to me. I still do not understand it.
+- When I tried to use `if` to solve the problem, it did not work without putting `else Filtered_bcl <- Filtered_bcl` after every `if`. It didn't make sense to me because when the argument within `if` is not fulfilled, there should be no change and `else Filtered_bcl <- Filtered_bcl` sounds redundant to me. I still do not understand it.
 
 - When I made a select box for the choice of subtypes, I used this code.
 ```
