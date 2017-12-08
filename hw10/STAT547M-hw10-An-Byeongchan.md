@@ -192,8 +192,45 @@ knitr::kable(tail(eth), format = "markdown")
 |337 |eth    |2017-01-03 |  9.531111| 648583.1| 6181717|
 |338 |eth    |2017-01-02 |  8.232979| 266461.0| 2193768|
 |339 |eth    |2017-01-01 |  8.036445| 294315.4| 2365250|
-#### . 
-I extracted each currency's data (from Jan 1 2017 to Dec 5 2017). I made a function to calculate daily returns and cumulative returns. The tail of `cum_ret_coins` shows their cumulative returns on December when they invested unit amount ($1) on Jan 1 2017.The result is quite amazing! Given that you invested 1 dollar in each currency (Jan 1 2017), you will get 11.8 in Bitcoin, 56.5 in Ethereum, 36.5 in Ripples (Dec 5 2017)!! Cumulative returns are 1180%, 5650%, 3650% respectively. I haven't tried to invest on those currencies so I am not sure they are liquid enough to exchange for USD whenver you want. However, those returns are astonishing!
+
+```r
+btc %>% 
+	ggplot(aes(x= date, y= prc)) +
+  geom_line(color = "blue") +
+  theme_bw() +
+  labs(x="Date",
+       y="BTC price",
+       title = "The (closing) price of BTC in 2017")
+```
+
+![](STAT547M-hw10-An-Byeongchan_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+
+```r
+eth %>% 
+	ggplot(aes(x= date, y= prc)) +
+  geom_line(color = "blue") +
+  theme_bw() +
+  labs(x="Date",
+       y="ETH price",
+       title = "The (closing) price of ETH in 2017")
+```
+
+![](STAT547M-hw10-An-Byeongchan_files/figure-html/unnamed-chunk-3-2.png)<!-- -->
+
+```r
+xrp %>% 
+	ggplot(aes(x= date, y= prc)) +
+  geom_line(color = "blue") +
+  theme_bw() +
+  labs(x="Date",
+       y="XRP price",
+       title = "The (closing) price of XRP in 2017")
+```
+
+![](STAT547M-hw10-An-Byeongchan_files/figure-html/unnamed-chunk-3-3.png)<!-- -->
+    
+I extracted each currency's data (from Jan 1 2017 to Dec 5 2017) and I added plots for each currency's closing prices.    
+I made a function to calculate daily returns and cumulative returns. The tail of `cum_ret_coins` shows their cumulative returns on December when they invested unit amount ($1) on Jan 1 2017.The result is quite amazing! Given that you invested 1 dollar in each currency (Jan 1 2017), you will get 11.8 in Bitcoin, 56.5 in Ethereum, 36.5 in Ripples (Dec 5 2017)!! Cumulative returns are 1180%, 5650%, 3650% respectively. I haven't tried to invest on those currencies so I am not sure they are liquid enough to exchange for USD whenver you want. However, those returns are astonishing!
 
 ```r
 # Function for calculating daily returns and cumulative returns
