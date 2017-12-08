@@ -9,10 +9,22 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-
+## Overview
 I explore `Alpha Vantage API` which has realtime and historical data on stocks, physical currencies, and digital/crypto currencies.
+   
+In this hw10, I will follow the data analysis I did in hw07 ([link to hw07 03_report.md](../hw07/03_report.md)). I calculated the stock performances of Apple and Amazon.com in 2016 in hw07. I provided cumulative return on AAPL (Apple) and AMZN (Amazon.com) in 2016. Cumulative returns are buy-and-hold returns which show the cumulative return at a specific point when a unit amount ($1) is invested in the beginning of the period.
+  
+In this hw10, I will have look at digital and crypto currencies such as BTC(Bitcoin), ETH(Ethereum), XRP(Ripples) as the datasets are availalbe on `Alpha Vantage API`. In addition, I will compare these with Apple's stock performance (cumulative return).
+  
 
+## Stock performance (Apple)
+`Alpha Vantage API` provides a variety of stock time series data: Intraday, Daily (adjusted), Weekly (adjusted), and Monthly (adjusted). I made a function which can extract daily adjusted dataset and monthly adjusted dataset. 
 
+- `stock_data(symbol = symbol, interval = interval, outputsize = outputsize)`. 
+    - Symbol is each firm's ticker symbol. 
+    - interval is either "MONTHLY" or "DAILY" (They should be UPPER CASE!!)
+    - outputsize has two values 'full' and 'compact': 'compact' returns only the latest 100 data points; 'full' returns the full-length time series of up to 20 years of historical data. 
+Those datasets have open, high, low, and close prices, volume, and dividend amount. `Adjusted price` is adjusting for dividend payments.
 ```{r}
 #install.packages("httr")
 library(httr)
@@ -22,14 +34,11 @@ library(glue)
 library(tidyverse)
 
 #test <- GET("https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=AAPL&apikey=RON9A5RW8SKDN593")
-
 #test2 <- fromJSON("https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=AAPL&apikey=RON9A5RW8SKDN593")
-
 
 
 #stock_data to get the stock data (monthly or daily data)
 # (Monthly or Daily) Adjusted Prices and Volumes
-
 # symbol: Ticker symbol
 # interval: 'MONTHLY' or 'DAILY' (MUST BE UPPER CASE!!!)
 # outputsize: 'full' or 'compact' ('compact' prints recent 100 observations)
@@ -62,13 +71,22 @@ stock_data <- function(symbol = symbol, interval = interval, outputsize = output
 
 	return(stock_dt3)
 }
-	
-AAPL <- stock_data(symbol = "AAPL", interval = "MONTHLY", outputsize = 'compact')
-head(AAPL)
+
 ```
+I extracted Apple's stock data (from Jan 1 2017 to Dec 5 2017)
+```{r}
+AAPL <- stock_data(symbol = "AAPL", interval = "DAILY", outputsize = 'full') %>%
+	filter(date>="2017-01-01" & date <= "2017-12-05" )
 
-
-
+knitr::kable(head(AAPL), format = "markdown")
+```
+  
+  
+## Digital and crypto currencies performance (BTC(Bitcoin), ETH(Ethereum), XRP(Ripples))
+`Alpha Vantage API` also provides Digital and crypto currencies data. I made a function which can extract those data.  
+- `digi_cur(symbol = symbol)`. 
+    - Symbol is each currency's symbol. (eg. BTC(Bitcoin), ETH(Ethereum), XRP(Ripples))
+This dataset has open, high, low, and close prices, volume, and market cap(price*volume). 
 
 ```{r}
 # digi_cur to get the daily data for digital and crypto currencies such as Bitcoin)
@@ -110,9 +128,9 @@ digi_cur <- function(symbol = symbol){
 btc <- digi_cur('btc') %>% filter(date >= "2017-01-01" & date <= "2017-12-05")
 eth <- digi_cur('eth') %>% filter(date >= "2017-01-01" & date <= "2017-12-05")
 xrp <- digi_cur('xrp') %>% filter(date >= "2017-01-01" & date <= "2017-12-05")
-tail(eth)
+knitr::kable(tail(eth), format = "markdown")
 ```
-
+I extracted each currency's data (from Jan 1 2017 to Dec 5 2017). I made a function to calculate daily returns and cumulative returns. The tail of `cum_ret_coins` shows their cumulative returns on December when they invested unit amount ($1) on Jan 1 2017.The result is quite amazing! Given that you invested 1 dollar in each currency (Jan 1 2017), you will get 11.8 in Bitcoin, 56.5 in Ethereum, 36.5 in Ripples (Dec 5 2017)!! I haven't tried to invest on those currencies so I am not sure they are liquid enough to exchange for USD whenver you want. However, those returns are astonishing!
 ```{r}
 # Function for calculating daily returns and cumulative returns
 ret_func <- function(x){
@@ -135,12 +153,12 @@ cum_ret_coins <- btc_ret %>%
   select(date, ret_cum.x, ret_cum.y, ret_cum, 
   			 ret.x, ret.y, ret) %>%
   rename(ret_cum_btc= ret_cum.x, ret_cum_eth= ret_cum.y, ret_cum_xrp= ret_cum,
-  			 ret_btc = ret.x, ret_eth = ret.y, ret_xps = ret)
-head(cum_ret_coins)
-tail(cum_ret_coins)
-
-
-
+  			 ret_btc = ret.x, ret_eth = ret.y, ret_xrp = ret)
+knitr::kable(head(cum_ret_coins), format = "markdown")
+knitr::kable(tail(cum_ret_coins), format = "markdown")
+```
+I plotted each currency's performance (cumulative returns). This shows the cumulative (buy-and-hold) return when you invested unit amount ($1) Jan 1 2017. The plot shows that even cumulative returns are really volatile especially in Ethereum and Ripples. Bitcoin has relatively stable cumulative returns compared to the others. 
+```{r}
 # Preparing data for plotting together
 cum_ret_coins2 <- cum_ret_coins %>% 
 	select(date, ret_cum_btc, ret_cum_eth, ret_cum_xrp) %>% 
@@ -156,9 +174,41 @@ cum_ret_coins2 %>%
   theme_bw() +
   labs(x="Date",
        y="Cumulative Return",
-       title = "Cumulative return on BTC, ETH and XRP in 2016")
+       title = "Cumulative return on BTC, ETH and XRP in 2017")
+
 
 ```
 
+I will compared those currencies' performance with Apple's stock performance. Those currencies are traded every day including week-ends so observations are 339 for each currency. However, stocks are not traded on week-ends and holidays so the number of observations in AAPL is 215. I matched the date on Apple's trading dates. The plot shows that even relatively low performance of Bitcoin has much higher returns compared to Apple's stock.
+```{r}
+# Calculating daily returns and cumulative returns for Apple stock as reference
+AAPL_ret <- ret_func(AAPL)
+
+# Merging four data-sets to compare cumulative returns between currencies and the stock
+cum_ret_mixed <- cum_ret_coins %>% 
+	inner_join(AAPL_ret, by = "date") %>% 
+  select(date, ret_cum_btc, ret_cum_eth, ret_cum_xrp, ret_cum,
+  			 ret_btc, ret_eth, ret_xrp, ret) %>%
+  rename(ret_cum_AAPL = ret_cum, ret_AAPL = ret)
+
+# Preparing data for plotting together
+cum_ret_mixed2 <- cum_ret_mixed %>% 
+	select(date, ret_cum_btc, ret_cum_eth, ret_cum_xrp, ret_cum_AAPL) %>% 
+  rename(BTC = ret_cum_btc, ETH = ret_cum_eth, XRP = ret_cum_xrp, 
+  			 AAPL = ret_cum_AAPL) %>% 
+  gather(key ="investment", value = "cum_ret", BTC, ETH, XRP, AAPL)
+
+
+
+#Plot the cumulative returns
+cum_ret_mixed2 %>% 
+  ggplot(aes(x= date, y= cum_ret, color= investment)) +
+  geom_line() +
+  theme_bw() +
+  labs(x="Date",
+       y="Cumulative Return",
+       title = "Cumulative return on BTC, ETH, XRP, and AAPL in 2017")
+
+```
 
 
