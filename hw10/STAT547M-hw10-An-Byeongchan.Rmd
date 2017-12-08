@@ -1,0 +1,92 @@
+---
+title: "STAT547M-hw10-An-Byeongchan"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+I explore `Alpha Vantage API` which has realtime and historical data on stocks, physical currencies, and digital/crypto currencies.
+
+
+```{r}
+#install.packages("httr")
+library(httr)
+library(jsonlite)
+library(purrr)
+library(glue)
+
+#test <- GET("https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=AAPL&apikey=RON9A5RW8SKDN593")
+
+#test2 <- fromJSON("https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=AAPL&apikey=RON9A5RW8SKDN593")
+
+
+
+#stock_data to get the stock data (monthly or daily data)
+# (Monthly or Daily) Adjusted Prices and Volumes
+
+# symbol: Ticker symbol
+# interval: 'MONTHLY' or 'DAILY' (MUST BE UPPER CASE!!)
+# outputsize: 'full' or 'compact' ('compact' prints recent 100 observations)
+stock_data <- function(symbol = symbol, interval = interval, outputsize = outputsize){
+	my_url <- glue('https://www.alphavantage.co/query?function=TIME_SERIES_{interval}_ADJUSTED&symbol={symbol}&outputsize={outputsize}&apikey=RON9A5RW8SKDN593')
+	
+	stock_dt <- fromJSON(my_url)
+	if (interval == "MONTHLY") stock_dt2 <- stock_dt[["Monthly Adjusted Time Series"]]
+	else if (interval == "DAILY") stock_dt2 <- stock_dt[["Time Series (Daily)"]]
+	else stop('interval only takes 2 strings: "MONTHLY" or "DAILY"')
+	
+	stock_dt3 <- map_df(stock_dt2,`[`, c("1. open",
+																			 "2. high",
+																			 "3. low",
+																			 "4. close",
+																			 "5. adjusted close",
+																			 "6. volume",
+																			 "7. dividend amount"))
+	stock_dt3['Date'] <- names(stock_dt2)
+	stock_dt3['Ticker'] <- symbol
+	return(stock_dt3)
+}
+	
+Apple <- stock_data(symbol = "AAPL", interval = "MONTHLY", outputsize = 'compact')
+```
+
+
+
+
+```{r}
+# digi_cur to get the daily data for digital and crypto currencies such as Bitcoin)
+#Daily prices and volumes for Digital Currency
+
+# symbol: The digital/crypto currency of your choice such as BTC(Bitcoin), ETH(Ethereum), XRP(Ripples)
+# outputsize: 'full' or 'compact' ('compact' prints recent 100 observations)
+digi_cur <- function(symbol = symbol){
+	my_url <- glue('https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol={symbol}&market=USD&apikey=RON9A5RW8SKDN593')
+	
+	digi_curr <- fromJSON(my_url)
+  digi_curr2 <- digi_curr[["Time Series (Digital Currency Daily)"]]
+
+	digi_curr3 <- map_df(digi_curr2,`[`, names(digicurr2[[1]])) 
+											 
+											 
+	# 										 c("1a. open (USD)", "1b. open (USD)",
+	# 																			 "2a. high (USD)", "2b. high (USD)",
+	# 																		   "3a. low (USD)", "3b. low (USD)",
+	# 																			 "4a. close (USD)", "4b. close (USD)"
+	# 																			 "5. volume",
+	# 																			 "6. market cap (USD)"))
+	# stock_dt3['Date'] <- names(stock_dt2)
+	# stock_dt3['Ticker'] <- symbol
+	return(digi_curr3)
+}
+
+hihello <- digi_cur('BTC')
+
+
+test2 <- test[["Time Series (Digital Currency Daily)"]]
+names(test2[[1]])
+test <- fromJSON('https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=BTC&market=USD&apikey=RON9A5RW8SKDN593')
+```
+

@@ -1,0 +1,196 @@
+---
+title: "cmd111"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(magrittr)
+library(purrr)
+library(glue)
+library(stringr)
+```
+
+```{r}
+library(rvest)
+library(xml2)
+```
+
+The information we want is here
+
+```{r}
+my_url <- "https://www.musixmatch.com/artist/Straight-Line-Stitch#"
+page_title <- read_html(my_url)
+```
+
+what's in `page_title` now?
+
+```{r}
+page_title %>%
+  html_nodes(css = ".title") %>%
+  html_text()
+```
+```{r}
+SLS_lyrics <- data_frame(Band = "Straight Line Stitch",
+                         Title = page_title %>%
+                           html_nodes(css = ".title") %>%
+                           html_text(),
+                         Link = glue('https://www.musixmatch.com/lyrics/{Band}/{Title}') %>%
+                           str_replace_all(" ","-"))
+```
+
+
+
+```{r}
+SLS_lyrics <- data.frame(Band = "Straight Line Stitch",
+                         Title = page_title %>% 
+                           html_nodes(css = ".title") %>% 
+                           html_text(),
+                         Link =
+                           glue('https://www.musixmatch.com/lyrics/{Band}/{Title}') %>% 
+                           str_replace_all(" ", "-"))
+
+SLS_lyrics$Link[1]
+```
+
+```{r}
+SLS_lyrics %<>% 
+  mutate(Lyrics = map(Link, read_html))
+```
+
+What do we have now?
+
+```{r}
+SLS_lyrics %>% View()
+```
+
+```{r}
+get_lyrics <- function(lyr_link){
+  lyr_link %>%
+		paste0("https://www.musixmatch.com",.) %>% 
+    read_html() %>% 
+    html_nodes(css = ".mxm-lyrics__content") %>% 
+    html_text() %>%       #able to get out the text
+    collapse(sep = "\n") %>% 
+    return()
+}
+```
+
+```{r}
+# get lyrics one by one by assigning number in []
+SLS_lyrics$Link[1] %>% 
+  get_lyrics()
+```
+
+```{r}
+# get all the lyrics
+SLS_lyrics %<>%
+  mutate(Lyrics = map_chr(Link, get_lyrics))
+```
+
+```{r}
+SLS_lyric %>% View()
+```
+
+
+## Challenge, now for Angel Haze
+
+
+```{r}
+AH_lyrics <- data_frame(Band = "Angel Haze",
+                         Title = 
+                          "https://www.musixmatch.com/artist/Angel-Haze" %>%
+                          read_html() %>% 
+                           html_nodes(css = ".title") %>%
+                           html_text(),
+                         Link =
+                          "https://www.musixmatch.com/artist/Angel-Haze" %>% 
+                          read_html() %>% 
+                          html_nodes(css = ".title") %>% 
+                          html_attr("href")
+                          
+                          
+#                           "" %>%
+#                            str_replace_all(" ","-"))
+# 
+# 
+# AH_lyrics <- data_frame(Band = "Angel Haze",
+#                          Title = 
+#                           "https://www.musixmatch.com/artist/Angel-Haze" %>%
+#                           read_html() %>% 
+#                            html_nodes(css = ".title") %>% 
+#                           html_attr("href"))
+
+```
+
+getting the lyrics! Use a map_XXX from purrr to get the lyrics
+http://stat545.com/111Scraping_Workthrough.html
+
+```{r}
+AH_lyrics %<>% 
+  mutate(Lyrics - )
+```
+
+
+
+```{r}
+AH_url <- "https://www.musixmatch.com/artist/Angel-Haze"
+
+AH_lyrics <- data_frame(Band = "Angel Haze",
+                        
+                         Title = AH_url %>%
+                          read_html() %>%
+                           html_nodes(css = ".title") %>%
+                           html_text(),
+                        
+                         Link = AH_url %>%
+                          read_html() %>%
+                           html_nodes(css = ".title") %>%
+                          html_attr("href")
+                        ) 
+```
+
+```{r}
+AH_lyrics %<>% 
+  mutate(Lyrics = map_chr(Link, get_lyrics))
+```
+
+
+```{r}
+library(purrr)
+get_lyrics_safe <- purrr::possibly(get_lyrics,otherwise = "None available")
+```
+
+
+```{r}
+ATCR_url <- "https://www.musixmatch.com/artist/A-Tribe-Called-Red#"
+
+ATCR_lyrics <- data_frame(Band = "A Tribe Called Red",
+                        
+                         Title = ATCR_url %>%
+                          read_html() %>%
+                           html_nodes(css = ".title") %>%
+                           html_text(),
+                        
+                         Link = ATCR_url %>%
+                          read_html() %>%
+                           html_nodes(css = ".title") %>%
+                          html_attr("href"),
+													Lyrics = map(Link, get_lyrics_safe)
+													) %>% 
+														unnest()
+                        
+
+```
+
+BONUS SENTIMENT ANALYSIS
+```{r}
+install.packages('tidytext')
+library(tidytext)
+afinn
+```
+

@@ -1,0 +1,35 @@
+---
+title: "APIs"
+output: html_document
+---
+
+```{r}
+library(httr)
+```
+
+```{r}
+thor_result <- httr::GET("http://www.omdbapi.com/?t=thor&y=2017
+")
+```
+
+```{r}
+thor_content <- content(thor_result)
+
+thor_content %>% View()
+```
+
+```{r}
+get_movie_TY <- function(title, year){
+	query_string <- glue("")
+	movie_result <- GET(query_string)
+	movie_content <- content(movie_result)
+	return(movie_content)
+}
+```
+
+```{r}
+babe <- get_movie_TV("babe", "1995")
+neo <- get_movie_TV("The Matrix", "1999")
+
+```
+
