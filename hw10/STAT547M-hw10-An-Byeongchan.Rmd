@@ -28,7 +28,7 @@ library(glue)
 # (Monthly or Daily) Adjusted Prices and Volumes
 
 # symbol: Ticker symbol
-# interval: 'MONTHLY' or 'DAILY' (MUST BE UPPER CASE!!)
+# interval: 'MONTHLY' or 'DAILY'
 # outputsize: 'full' or 'compact' ('compact' prints recent 100 observations)
 stock_data <- function(symbol = symbol, interval = interval, outputsize = outputsize){
 	my_url <- glue('https://www.alphavantage.co/query?function=TIME_SERIES_{interval}_ADJUSTED&symbol={symbol}&outputsize={outputsize}&apikey=RON9A5RW8SKDN593')
@@ -50,7 +50,7 @@ stock_data <- function(symbol = symbol, interval = interval, outputsize = output
 	return(stock_dt3)
 }
 	
-Apple <- stock_data(symbol = "AAPL", interval = "MONTHLY", outputsize = 'compact')
+Apple <- stock_data(symbol = "AAPL", interval = "monthly", outputsize = 'compact')
 ```
 
 
@@ -68,25 +68,19 @@ digi_cur <- function(symbol = symbol){
 	digi_curr <- fromJSON(my_url)
   digi_curr2 <- digi_curr[["Time Series (Digital Currency Daily)"]]
 
-	digi_curr3 <- map_df(digi_curr2,`[`, names(digicurr2[[1]])) 
-											 
-											 
-	# 										 c("1a. open (USD)", "1b. open (USD)",
-	# 																			 "2a. high (USD)", "2b. high (USD)",
-	# 																		   "3a. low (USD)", "3b. low (USD)",
-	# 																			 "4a. close (USD)", "4b. close (USD)"
-	# 																			 "5. volume",
-	# 																			 "6. market cap (USD)"))
-	# stock_dt3['Date'] <- names(stock_dt2)
-	# stock_dt3['Ticker'] <- symbol
+	digi_curr3 <- map_df(digi_curr2,`[`, c("1a. open (USD)", "1b. open (USD)",
+																				 "2a. high (USD)", "2b. high (USD)",
+																			   "3a. low (USD)", "3b. low (USD)",
+																				 "4a. close (USD)", "4b. close (USD)",
+																				 "5. volume",
+																				 "6. market cap (USD)"))
+	digi_curr3['Date'] <- names(digi_curr2)
+	digi_curr3['Symbol'] <- symbol
 	return(digi_curr3)
 }
 
-hihello <- digi_cur('BTC')
-
-
-test2 <- test[["Time Series (Digital Currency Daily)"]]
-names(test2[[1]])
-test <- fromJSON('https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=BTC&market=USD&apikey=RON9A5RW8SKDN593')
+btc <- digi_cur('btc')
+eth <- digi_cur('eth')
+xrp <- digi_cur('xrp')
 ```
 
