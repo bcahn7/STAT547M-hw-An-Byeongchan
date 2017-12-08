@@ -192,8 +192,8 @@ knitr::kable(tail(eth), format = "markdown")
 |337 |eth    |2017-01-03 |  9.531111| 648583.1| 6181717|
 |338 |eth    |2017-01-02 |  8.232979| 266461.0| 2193768|
 |339 |eth    |2017-01-01 |  8.036445| 294315.4| 2365250|
-  
-I extracted each currency's data (from Jan 1 2017 to Dec 5 2017). I made a function to calculate daily returns and cumulative returns. The tail of `cum_ret_coins` shows their cumulative returns on December when they invested unit amount ($1) on Jan 1 2017.The result is quite amazing! Given that you invested 1 dollar in each currency (Jan 1 2017), you will get 11.8 in Bitcoin, 56.5 in Ethereum, 36.5 in Ripples (Dec 5 2017)!! I haven't tried to invest on those currencies so I am not sure they are liquid enough to exchange for USD whenver you want. However, those returns are astonishing!
+#### . 
+I extracted each currency's data (from Jan 1 2017 to Dec 5 2017). I made a function to calculate daily returns and cumulative returns. The tail of `cum_ret_coins` shows their cumulative returns on December when they invested unit amount ($1) on Jan 1 2017.The result is quite amazing! Given that you invested 1 dollar in each currency (Jan 1 2017), you will get 11.8 in Bitcoin, 56.5 in Ethereum, 36.5 in Ripples (Dec 5 2017)!! Cumulative returns are 1180%, 5650%, 3650% respectively. I haven't tried to invest on those currencies so I am not sure they are liquid enough to exchange for USD whenver you want. However, those returns are astonishing!
 
 ```r
 # Function for calculating daily returns and cumulative returns
@@ -246,8 +246,7 @@ knitr::kable(tail(cum_ret_coins), format = "markdown")
 |336 |2017-12-03 |    11.37590|    57.53036|    38.37200| 0.0297495|  0.0096041|  0.0042505|
 |337 |2017-12-04 |    11.75266|    58.04354|    38.53800| 0.0331189|  0.0089202|  0.0043262|
 |338 |2017-12-05 |    11.80862|    56.52110|    36.52420| 0.0047613| -0.0262293| -0.0522549|
-  
-  
+#### .
 I plotted each currency's performance (cumulative returns). This shows the cumulative (buy-and-hold) return when you invested unit amount ($1) Jan 1 2017. The plot shows that even cumulative returns are really volatile especially in Ethereum and Ripples. Bitcoin has relatively stable cumulative returns compared to the others. 
 
 ```r
@@ -305,4 +304,33 @@ cum_ret_mixed2 %>%
 
 ![](STAT547M-hw10-An-Byeongchan_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
 
+## Summary Statistics
+In finance, high risk, high return. The more you take risks, the more you will get compensated (on average). There's no free lunch. I will glimpse if this works. Standard deviation can be used as a proxy for risks (uncertainty; volatility). I will get some summary statistics on daily returns (not on cumulative returns). The daily returns of AAPL has the lowest daily mean return(0.18%) and the lowest standard deviation(0.0112). Those investment alternatives have a tendency that the riskier they are, the more returns they provide. However, XRP is riskier(more volatile) in terms of volatility (Std is 0.0984) but does not compensate enough (less mean return; 1.591%) for bearing that risk, compared to ETH.
+This is a crude analysis. Normally, in stocks, the risks could be divided into idiosyncratic risks and systematic risks (which can be diversified). Further analysis would be supplementary. 
+
+```r
+cum_ret_mixed %>% 
+	select(ret_btc, ret_eth, ret_xrp, ret_AAPL) %>% 
+  rename(BTC = ret_btc, ETH = ret_eth, XRP = ret_xrp, 
+  			 AAPL = ret_AAPL) %>% 
+  gather(key ="investment", value = "daily_ret", BTC, ETH, XRP, AAPL) %>% 
+	group_by(investment) %>%
+  summarize_each(funs(mean, sd, min, median, max), daily_ret) %>% 
+  knitr::kable(format = "markdown")
+```
+
+```
+## `summarise_each()` is deprecated.
+## Use `summarise_all()`, `summarise_at()` or `summarise_if()` instead.
+## To map `funs` over a selection of variables, use `summarise_at()`
+```
+
+
+
+|investment | daily_ret_mean| daily_ret_sd| daily_ret_min| daily_ret_median| daily_ret_max|
+|:----------|--------------:|------------:|-------------:|----------------:|-------------:|
+|AAPL       |      0.0017579|    0.0111893|    -0.0387766|        0.0007655|     0.0609803|
+|BTC        |      0.0092007|    0.0480905|    -0.1663494|        0.0104520|     0.2354871|
+|ETH        |      0.0159256|    0.0714000|    -0.1924436|        0.0040960|     0.3014247|
+|XRP        |      0.0159124|    0.0984145|    -0.4588309|       -0.0023948|     0.4703091|
 
