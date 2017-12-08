@@ -1,26 +1,65 @@
----
-title: "STAT547M-hw06-An-Byeongchan"
-output: 
-  html_document:
-    keep_md: yes
----
+# STAT547M-hw06-An-Byeongchan
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+
 
 
 I explore `Alpha Vantage API` which has realtime and historical data on stocks, physical currencies, and digital/crypto currencies.
 
 
-```{r}
+
+```r
 #install.packages("httr")
 library(httr)
+```
+
+```
+## Warning: package 'httr' was built under R version 3.4.3
+```
+
+```r
 library(jsonlite)
 library(purrr)
+```
+
+```
+## 
+## Attaching package: 'purrr'
+```
+
+```
+## The following object is masked from 'package:jsonlite':
+## 
+##     flatten
+```
+
+```r
 library(glue)
 library(tidyverse)
+```
 
+```
+## Warning: package 'tidyverse' was built under R version 3.4.2
+```
+
+```
+## Loading tidyverse: ggplot2
+## Loading tidyverse: tibble
+## Loading tidyverse: tidyr
+## Loading tidyverse: readr
+## Loading tidyverse: dplyr
+```
+
+```
+## Conflicts with tidy packages ----------------------------------------------
+```
+
+```
+## collapse(): dplyr, glue
+## filter():   dplyr, stats
+## lag():      dplyr, stats
+```
+
+```r
 #test <- GET("https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=AAPL&apikey=RON9A5RW8SKDN593")
 
 #test2 <- fromJSON("https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=AAPL&apikey=RON9A5RW8SKDN593")
@@ -67,10 +106,21 @@ AAPL <- stock_data(symbol = "AAPL", interval = "MONTHLY", outputsize = 'compact'
 head(AAPL)
 ```
 
+```
+##   symbol       date      prc    volume
+## 1   AAPL 2017-12-08 169.9695 163473954
+## 2   AAPL 2017-11-30 171.8500 583856889
+## 3   AAPL 2017-10-31 168.4325 496135305
+## 4   AAPL 2017-09-29 153.5661 669594016
+## 5   AAPL 2017-08-31 163.4106 638221161
+## 6   AAPL 2017-07-31 147.5968 411377229
+```
 
 
 
-```{r}
+
+
+```r
 # digi_cur to get the daily data for digital and crypto currencies such as Bitcoin)
 #Daily prices and volumes for Digital Currency
 
@@ -113,7 +163,18 @@ xrp <- digi_cur('xrp') %>% filter(date >= "2017-01-01" & date <= "2017-12-05")
 tail(eth)
 ```
 
-```{r}
+```
+##     symbol       date       prc   volume  mktcap
+## 334    eth 2017-01-06 10.058127 346575.8 3485904
+## 335    eth 2017-01-05 10.152173 901449.2 9151669
+## 336    eth 2017-01-04 11.002355 717888.4 7898463
+## 337    eth 2017-01-03  9.531110 648583.1 6181717
+## 338    eth 2017-01-02  8.232979 266461.0 2193768
+## 339    eth 2017-01-01  8.036445 294315.4 2365250
+```
+
+
+```r
 # Function for calculating daily returns and cumulative returns
 ret_func <- function(x){
   x %>% 
@@ -137,10 +198,47 @@ cum_ret_coins <- btc_ret %>%
   rename(ret_cum_btc= ret_cum.x, ret_cum_eth= ret_cum.y, ret_cum_xrp= ret_cum,
   			 ret_btc = ret.x, ret_eth = ret.y, ret_xps = ret)
 head(cum_ret_coins)
+```
+
+```
+##         date ret_cum_btc ret_cum_eth ret_cum_xrp      ret_btc      ret_eth
+## 1 2017-01-02   1.0251096    1.024455   0.9888029  0.025109613  0.024455324
+## 2 2017-01-03   1.0387343    1.185986   1.0080907  0.013290921  0.157674623
+## 3 2017-01-04   1.1460766    1.369058   0.9995086  0.103339511  0.154362391
+## 4 2017-01-05   1.0094980    1.263267   0.9647594 -0.119170572 -0.077272730
+## 5 2017-01-06   0.9020805    1.251564   0.9803821 -0.106406769 -0.009263682
+## 6 2017-01-07   0.9093245    1.196879   0.9844211  0.008030259 -0.043693589
+##        ret_xps
+## 1 -0.011197060
+## 2  0.019506150
+## 3 -0.008513188
+## 4 -0.034766312
+## 5  0.016193340
+## 6  0.004119903
+```
+
+```r
 tail(cum_ret_coins)
+```
 
+```
+##           date ret_cum_btc ret_cum_eth ret_cum_xrp     ret_btc
+## 333 2017-11-30    10.13816    54.31039    37.21769 0.024958260
+## 334 2017-12-01    11.03517    57.47486    38.77354 0.088479373
+## 335 2017-12-02    11.04725    56.98309    38.20959 0.001094662
+## 336 2017-12-03    11.37590    57.53036    38.37200 0.029749457
+## 337 2017-12-04    11.75266    58.04354    38.53800 0.033118950
+## 338 2017-12-05    11.80862    56.52110    36.52420 0.004761313
+##          ret_eth      ret_xps
+## 333  0.031558764  0.013277946
+## 334  0.058266323  0.041803957
+## 335 -0.008556240 -0.014544753
+## 336  0.009604146  0.004250540
+## 337  0.008920155  0.004326187
+## 338 -0.026229275 -0.052254941
+```
 
-
+```r
 # Preparing data for plotting together
 cum_ret_coins2 <- cum_ret_coins %>% 
 	select(date, ret_cum_btc, ret_cum_eth, ret_cum_xrp) %>% 
@@ -157,8 +255,9 @@ cum_ret_coins2 %>%
   labs(x="Date",
        y="Cumulative Return",
        title = "Cumulative return on BTC, ETH and XRP in 2016")
-
 ```
+
+![](STAT547M-hw10-An-Byeongchan_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
 
 
 
