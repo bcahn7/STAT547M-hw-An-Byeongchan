@@ -1,4 +1,4 @@
-# STAT547M-hw06-An-Byeongchan
+# STAT547M-hw10-An-Byeongchan
 
 
 
@@ -192,6 +192,7 @@ knitr::kable(tail(eth), format = "markdown")
 |337 |eth    |2017-01-03 |  9.531111| 648583.1| 6181717|
 |338 |eth    |2017-01-02 |  8.232979| 266461.0| 2193768|
 |339 |eth    |2017-01-01 |  8.036445| 294315.4| 2365250|
+  
 I extracted each currency's data (from Jan 1 2017 to Dec 5 2017). I made a function to calculate daily returns and cumulative returns. The tail of `cum_ret_coins` shows their cumulative returns on December when they invested unit amount ($1) on Jan 1 2017.The result is quite amazing! Given that you invested 1 dollar in each currency (Jan 1 2017), you will get 11.8 in Bitcoin, 56.5 in Ethereum, 36.5 in Ripples (Dec 5 2017)!! I haven't tried to invest on those currencies so I am not sure they are liquid enough to exchange for USD whenver you want. However, those returns are astonishing!
 
 ```r
@@ -245,6 +246,8 @@ knitr::kable(tail(cum_ret_coins), format = "markdown")
 |336 |2017-12-03 |    11.37590|    57.53036|    38.37200| 0.0297495|  0.0096041|  0.0042505|
 |337 |2017-12-04 |    11.75266|    58.04354|    38.53800| 0.0331189|  0.0089202|  0.0043262|
 |338 |2017-12-05 |    11.80862|    56.52110|    36.52420| 0.0047613| -0.0262293| -0.0522549|
+  
+  
 I plotted each currency's performance (cumulative returns). This shows the cumulative (buy-and-hold) return when you invested unit amount ($1) Jan 1 2017. The plot shows that even cumulative returns are really volatile especially in Ethereum and Ripples. Bitcoin has relatively stable cumulative returns compared to the others. 
 
 ```r
